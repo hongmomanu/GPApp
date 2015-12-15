@@ -1,28 +1,24 @@
 <ion-view view-title="全科专题">
   <ion-content class="padding">
-    <div class="list card">
-      <div class="item item-divider">Recent Updates</div>
+
+      <ion-refresher
+                     pulling-text="下拉加载..."
+                     on-refresh="doRefresh()">
+      </ion-refresher>
+
+    <div class="list card" ng-repeat="articleday in articles">
+
+      <div class="item item-divider divider-center">{{articleday.time | date:'yyyy-MM-dd '}}</div>
       <div class="item item-body">
-        <div>
-          There is a fire in <b>sector 3</b>
-        </div>
+         <ion-list>
+          <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="articledayitem in articleday.data" type="item-text-wrap" href="#/tab/gpsubject/{{articledayitem.source}}/{{articledayitem._id}}">
+            <img ng-src="{{resourceurl + articledayitem.titleimage}}">
+            <h2>{{articledayitem.title}}</h2>
+            <i class="icon ion-chevron-right icon-accessory"></i>
+          </ion-item>
+         </ion-list>
       </div>
     </div>
-    <div class="list card">
-      <div class="item item-divider">Health</div>
-      <div class="item item-body">
-        <div>
-          You ate an apple today!
-        </div>
-      </div>
-    </div>
-    <div class="list card">
-      <div class="item item-divider">Upcoming</div>
-      <div class="item item-body">
-        <div>
-          You have <b>29</b> meetings on your calendar tomorrow.
-        </div>
-      </div>
-    </div>
+
   </ion-content>
 </ion-view>

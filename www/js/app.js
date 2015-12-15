@@ -34,6 +34,13 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
+  .state('user', {
+                url: '/login',
+                templateUrl: 'templates/loginfull.html',
+                //templateUrl: localStorage.serverurl+'client/'+'templates/loginfull.html?t='+(new Date().getTime()),
+                controller: 'UserCtrl'
+            })
+
   // setup an abstract state for the tabs directive
     .state('tab', {
     url: '/tab',
@@ -53,6 +60,27 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   })
 
+   .state('tab.gpsubjectdetaillink', {
+     url: '/gpsubject/0/:gpsubjectId',
+    views: {
+      'tab-gpsubject': {
+        templateUrl: 'templates/gpsubject-detaillink.html',
+        controller: 'GPsubjectDetailCtrl'
+      }
+    }
+  })
+
+  .state('tab.gpsubjectdetailcontent', {
+     url: '/gpsubject/1/:gpsubjectId',
+    views: {
+      'tab-gpsubject': {
+        templateUrl: 'templates/gpsubject-detailcontent.html',
+        controller: 'GPsubjectDetailContentCtrl'
+      }
+    }
+  })
+
+
   .state('tab.community', {
       url: '/community',
       views: {
@@ -62,25 +90,67 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
+  .state('tab.communitydetaillink', {
+     url: '/community/0/:communityId',
+    views: {
+      'tab-community': {
+        templateUrl: 'templates/community-detaillink.html',
+        controller: 'CommunityDetailCtrl'
       }
-    })
+    }
+  })
+
+  .state('tab.communitydetailcontent', {
+     url: '/community/1/:communityId',
+    views: {
+      'tab-community': {
+        templateUrl: 'templates/community-detailcontent.html',
+        controller: 'CommunityDetailContentCtrl'
+      }
+    }
+  })
+
+
 
   .state('tab.activity', {
     url: '/activity',
     views: {
-      'tab-account': {
+      'tab-activity': {
         templateUrl: 'templates/tab-activity.html',
         controller: 'ActivityCtrl'
       }
     }
-  });
+  })
+  .state('tab.activitydetaillink', {
+     url: '/activity/0/:activityId',
+    views: {
+      'tab-activity': {
+        templateUrl: 'templates/activity-detaillink.html',
+        controller: 'ActivityDetailCtrl'
+      }
+    }
+  })
+
+  .state('tab.activitydetailcontent', {
+     url: '/activity/1/:activityId',
+    views: {
+      'tab-activity': {
+        templateUrl: 'templates/activity-detailcontent.html',
+        controller: 'ActivityDetailContentCtrl'
+      }
+    }
+  })
+  .state('tab.setting', {
+    url: '/setting',
+    views: {
+      'tab-setting': {
+        templateUrl: 'templates/tab-setting.html',
+        controller: 'SettingCtrl'
+      }
+    }
+  })
+
+  ;
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/gpsubject');

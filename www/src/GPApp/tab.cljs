@@ -15,7 +15,7 @@
 
   (println "tabinit")
 
-  (def.controller starter.controllers.TabCtrl [$scope $sce MenuService MessageService $rootScope $state $stateParams $ionicModal $ionicPopup $timeout UserService  $ionicLoading $compile]
+  (def.controller starter.controllers.TabCtrl [$scope $sce     $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
     (println "MenuCtrl")
 

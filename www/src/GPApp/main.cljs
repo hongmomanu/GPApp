@@ -5,6 +5,7 @@
             [GPApp.gpsubject :as gpsubject]
             [GPApp.community :as community]
             [GPApp.activity :as activity]
+            [GPApp.setting :as setting]
 
             )
   (:use [jayq.core :only [$ css html]]
@@ -35,5 +36,6 @@
 (gpsubject/init)
 (community/init)
 (activity/init)
+(setting/init)
 
 (println "Hello world initssssssss  sssssss!")

@@ -1,16 +1,24 @@
 <ion-view view-title="社区之窗">
-  <ion-content>
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
-        <img ng-src="{{chat.face}}">
-        <h2>{{chat.name}}</h2>
-        <p>{{chat.lastText}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
+  <ion-content class="padding">
 
-        <ion-option-button class="button-assertive" ng-click="remove(chat)">
-          Delete
-        </ion-option-button>
-      </ion-item>
-    </ion-list>
+      <ion-refresher
+                     pulling-text="下拉加载..."
+                     on-refresh="doRefresh()">
+      </ion-refresher>
+
+    <div class="list card" ng-repeat="articleday in articles">
+
+      <div class="item item-divider divider-center">{{articleday.time | date:'yyyy-MM-dd '}}</div>
+      <div class="item item-body">
+         <ion-list>
+          <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="articledayitem in articleday.data" type="item-text-wrap" href="#/tab/community/{{articledayitem.source}}/{{articledayitem._id}}">
+            <img ng-src="{{resourceurl + articledayitem.titleimage}}">
+            <h2>{{articledayitem.title}}</h2>
+            <i class="icon ion-chevron-right icon-accessory"></i>
+          </ion-item>
+         </ion-list>
+      </div>
+    </div>
+
   </ion-content>
 </ion-view>
