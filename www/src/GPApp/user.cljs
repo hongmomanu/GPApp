@@ -28,9 +28,9 @@
                                                                    }  ) )
                   (.then (fn [response] response))))
 
-   :fireunreadmsgs (fn [userid deptid]
+   :fireunreadmsgs (fn [userid usertype]
                 (-> $http
-                  (.get (str js/serverurl "getunreadmessages") (obj :params {:userid  userid :deptid deptid}  ) )
+                  (.get (str js/serverurl "getunreadmessages") (obj :params {:userid  userid :usertype usertype}  ) )
                   (.then (fn [response] response))))
 
 
@@ -38,6 +38,8 @@
                 (-> $http
                   (.get (str js/serverurl "getunreadnotifications") (obj :params {:userid  userid}  ) )
                   (.then (fn [response] response))))
+
+
 
 
     ))
@@ -68,6 +70,7 @@
                                     (if (js->clj response.data.success)
                                       (do
                                         (! js/localStorage.username response.data.user.username)
+                                        (! js/localStorage.userid response.data.user._id)
                                         (! js/localStorage.password response.data.user.password)
                                         (! js/localStorage.realname response.data.user.realname)
                                         (! js/localStorage.usertype response.data.user.usertype)
@@ -114,6 +117,19 @@
                              ))
 
 
+    (.$on $rootScope "getunreadmsgs" (fn [event]
+
+                                       (println "all right")
+
+                                       (-> UserService
+                           (.fireunreadmsgs js/localStorage.userid js/localStorage.usertype)
+                           (.then (fn [response]
+                                    (println "getunreadmsgs")
+
+                                    )))
+                                            ))
+
+
 
 
 
@@ -147,6 +163,7 @@
                                     (if (js->clj response.data.success)
                                       (do
                                         (! js/localStorage.username response.data.user.username)
+                                        (! js/localStorage.userid response.data.user._id)
                                         (! js/localStorage.password response.data.user.password)
                                         (! js/localStorage.realname response.data.user.realname)
                                         (! js/localStorage.usertype response.data.user.usertype)

@@ -131,6 +131,7 @@
 
 
     (println "FileUploader" $scope.uploader)
+
     (! $scope.progress 0)
 
     (! $scope.uploader.onAfterAddingFile  (fn [fileItem] (-> fileItem
