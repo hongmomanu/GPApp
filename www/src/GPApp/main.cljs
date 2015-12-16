@@ -6,6 +6,8 @@
             [GPApp.community :as community]
             [GPApp.activity :as activity]
             [GPApp.setting :as setting]
+            [GPApp.user :as user]
+            [GPApp.messsage :as messsage]
 
             )
   (:use [jayq.core :only [$ css html]]
@@ -37,5 +39,7 @@
 (community/init)
 (activity/init)
 (setting/init)
+(user/init)
+(messsage/init)
 
 (println "Hello world initssssssss  sssssss!")

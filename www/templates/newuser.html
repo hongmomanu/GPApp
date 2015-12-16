@@ -1,0 +1,42 @@
+<ion-view view-title="用户"  >
+    <ion-content>
+        <div class="list" >
+            <label class="item item-input">
+                <span class="input-label">用户名:</span>
+                <input type="text" ng-model="user.username">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">真实姓名:</span>
+                <input type="text" ng-model="user.realname">
+            </label>
+
+            <div class="button-bar" >
+
+                <ion-radio style="width: 100%;" ng-repeat="item in usertypes"
+                         ng-value="item.value"
+                         ng-model="user.usertype">
+                {{ item.text }}
+              </ion-radio>
+            </div>
+
+            <label class="item item-input">
+                <span class="input-label">密码:</span>
+                <input type="password" ng-model="user.password">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">密码确认:</span>
+                <input type="password" ng-model="user.repassword">
+            </label>
+        </div>
+        <div class="padding">
+            <button class="button button-block button-calm" ng-click="newUser(user)">
+                确定
+            </button>
+
+            <!--<p class="text-center">
+                <a href="#/forgot-password">Forgot password</a>
+            </p>-->
+        </div>
+
+    </ion-content>
+</ion-view>

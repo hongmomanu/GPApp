@@ -8,7 +8,7 @@
 
 var serverurl= localStorage.serverurl;
 
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -25,6 +25,18 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   });
 })
+.directive('compilehtml', ['$compile', function ($compile) {
+  return function(scope, element, attrs) {
+    scope.$watch(
+      function(scope) {
+        return scope.$eval(attrs.compilehtml);
+      },
+      function(value) {
+        element.html(value);
+        $compile(element.contents())(scope);
+      }
+   )};
+  }])
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -35,10 +47,18 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   $stateProvider
 
   .state('user', {
-                url: '/login',
+                url: '/user',
+
                 templateUrl: 'templates/loginfull.html',
                 //templateUrl: localStorage.serverurl+'client/'+'templates/loginfull.html?t='+(new Date().getTime()),
                 controller: 'UserCtrl'
+            })
+
+  .state('newuser', {
+                url: '/newuser',
+                templateUrl: 'templates/newuser.html',
+                //templateUrl: localStorage.serverurl+'client/'+'templates/loginfull.html?t='+(new Date().getTime()),
+                controller: 'NewUserCtrl'
             })
 
   // setup an abstract state for the tabs directive
@@ -149,10 +169,19 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+  .state('tab.settingmessage', {
+    url: '/setting/message/:usertype',
+    views: {
+      'tab-setting': {
+        templateUrl: 'templates/message.html',
+        controller: 'MessageCtrl'
+      }
+    }
+  })
 
   ;
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/gpsubject');
+  $urlRouterProvider.otherwise('/user');
 
 });
