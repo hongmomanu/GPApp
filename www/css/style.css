@@ -5,6 +5,13 @@
 
 }
 
+.elementCenterAlign {
+    position: absolute;
+    top: 50% !important;
+    transform: translateY(-50%);
+}
+
+
 .messages {
 	margin:0;
 	padding:0;

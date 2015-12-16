@@ -63,7 +63,7 @@
     ))
 
 
-  (def.controller starter.controllers.MessageCtrl [$scope $sce FileUploader MessageService $ionicScrollDelegate   $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
+  (def.controller starter.controllers.MessageCtrl [$scope $location $sce FileUploader MessageService $ionicScrollDelegate   $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
 
     (println "MessageCtrl")
@@ -555,10 +555,13 @@
 
 
 
-    (println "newmessagesnewmessages added" $scope.messages)
+    (println "newmessagesnewmessages added")
 
 
-    (.$on $scope "receivepmsg" (fn [event data] (println "receivepmsg" event data (= data.data.fromid data.data.toid))
+    (.$on $scope "receivegmsg" (fn [event data]
+
+                                 (println 1212)
+
 
                                      (when-not (= data.data.fromid data.data.toid)
 
@@ -566,20 +569,19 @@
                                                    (when (> (js->clj(-> $location
                                                        (.url)
 
-                                                       (.indexOf data.data.fromid)
+                                                       (.indexOf (str "message/" data.data.groupid))
 
                                                        )) 0) ($timeout (fn[](do (.push $scope.messages (obj :time data.data.time  :content data.data.content :local false :realname
                                                                     (str "<a>" data.data.fromname (.date js/$.format (new js/Date data.data.time ) "M-dd hh:mm") "</a>")))
-                                                              (println "$scope.messages " $scope.messages )
-                                                                              (aset js/newmessages data.data.fromid nil)
-                                                              (.$broadcast $rootScope "updatedeptpersons")
-                                                              (.$broadcast $rootScope "updatemsgnums")
-                                                              (.$broadcast $rootScope "canceltip" data.data._id)
+
+
+
+                                                              (.$broadcast $rootScope "clearmsgnums")
                                                               (.scrollBottom $ionicScrollDelegate true)
 
 
 
-                                                              ) )0)
+                                                              )) 0)
 
                                                      )
 

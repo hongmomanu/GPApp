@@ -57,7 +57,10 @@
                           (println "websockty" res)
                           (case res.type
                             "message" (do
-                                        (println res.data.mtype)
+
+
+                                        (.$broadcast $rootScope "addmsgnums")
+                                        (.$broadcast $rootScope "receivegmsg" res)
 
 
                                         )

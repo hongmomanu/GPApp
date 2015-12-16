@@ -21,6 +21,8 @@
 
     (! $scope.usertype js/localStorage.usertype)
 
+    (! $scope.unreadnums 0)
+
     (! $scope.logout (fn[]
 
                        (! js/localStorage.password "")
@@ -28,6 +30,25 @@
                        (.go $state "user")
 
                        ))
+
+
+    (.$on $scope "clearmsgnums" (fn [event ]
+
+                              (! $scope.unreadnums 0)
+
+                                 )
+
+
+          )
+
+    (.$on $scope "addmsgnums" (fn [event ]
+
+                              (! $scope.unreadnums (+ $scope.unreadnums 1))
+
+                                 )
+
+
+          )
 
   )
 
