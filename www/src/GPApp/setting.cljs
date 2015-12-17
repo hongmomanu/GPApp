@@ -21,7 +21,7 @@
 
     (! $scope.usertype js/localStorage.usertype)
 
-    (! $scope.unreadnums 0)
+    (! $scope.unreadnums nil)
 
     (! $scope.logout (fn[]
 
@@ -34,7 +34,7 @@
 
     (.$on $scope "clearmsgnums" (fn [event ]
 
-                              (! $scope.unreadnums 0)
+                              (! $scope.unreadnums nil)
 
                                  )
 
@@ -43,7 +43,7 @@
 
     (.$on $scope "addmsgnums" (fn [event ]
 
-                              (! $scope.unreadnums (+ $scope.unreadnums 1))
+                              (! $scope.unreadnums (+ (if (nil? $scope.unreadnums) 0 $scope.unreadnums) 1))
 
                                  )
 

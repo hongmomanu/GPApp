@@ -63,7 +63,7 @@
     ))
 
 
-  (def.controller starter.controllers.MessageCtrl [$scope $location $sce FileUploader MessageService $ionicScrollDelegate   $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
+  (def.controller starter.controllers.MessageCtrl [$scope $ionicActionSheet $location $sce FileUploader MessageService $ionicScrollDelegate   $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
 
     (println "MessageCtrl")
@@ -103,8 +103,8 @@
                                                       (fn[suc](let [response (.parse js/JSON suc.response)]
                                                             (if response.success (do
                                                                                    (! $scope.messagetext (str "<img ng-click=\"showImages('" js/serverurl "files/"
-                                                                               response.filename "')\" width=\"100%\" height=\"100%\"  src=\"" js/serverurl "files/"
-                                                                               response.filename "\"></img>"))
+                                                                               response.filename "')\" width=\"100px\"   src=\"" js/serverurl "files/"
+                                                                                "small" response.filename "\"></img>"))
                                                                                   ( $scope.addmessage "image")
 
 
@@ -181,9 +181,9 @@
                                             "image" (do (println "image")
 
                                                       ($timeout (fn []
-                                                                (! $scope.messagetext (str "<img width=\"100%\" height=\"100%\" ng-click=\"showImages('" js/serverurl "files/"
+                                                                (! $scope.messagetext (str "<img width=\"100px\"   ng-click=\"showImages('" js/serverurl "files/"
                                                                                response.filename "')\"  src=\"" js/serverurl "files/"
-                                                                               response.filename "\"></img>")
+                                                                               "small" response.filename "\"></img>")
 
                                                                  )
                                                                 ( $scope.addmessage "image")
@@ -227,7 +227,7 @@
 
                            (! $scope.imagesrc imageurl)
                            (! $scope.zoomMin  1)
-                           (-> (.fromTemplateUrl  $ionicModal (str js/localStorage.serverurl "client/" "templates/imagemodal.html" )(obj :scope $scope
+                           (-> (.fromTemplateUrl  $ionicModal (str  "templates/imagemodal.html" )(obj :scope $scope
                                                                        )) (.then  (fn [modal] (
                                                                                                  ! $scope.imagemodal modal
                                                                                                  )
@@ -621,12 +621,14 @@
 
                                         (! $scope.messagetext "")
 
-                                        (.scrollBottom $ionicScrollDelegate true)
+                                        ($timeout (fn[] (.scrollBottom $ionicScrollDelegate true)) 200)
+
+                                        ;(.scrollBottom $ionicScrollDelegate true)
 
                                         )
 
 
-                                                  ) 20)
+                                                  ) 0)
 
                                       (.alert $ionicPopup (obj :title "发送失败" :template "网络错误"))
 
@@ -646,9 +648,10 @@
                            ) )
 
 
-    (! $scope.doRefresh (fn[]
+    (! $scope.doRefresh (fn[callback]
 
                           (println "doRefresh")
+                          (.$broadcast $rootScope "clearmsgnums")
                           (-> MessageService
                            (.getgroupmessagehistory js/localStorage.userid js/localStorage.usertype  (if (nil? (first $scope.messages)) (.date js/$.format (new js/Date) "yyyy-M-ddTH:mm:ssZ") (aget (first $scope.messages) "time")) )
                            (.then (fn [response]
@@ -676,12 +679,17 @@
 
                                     (.$broadcast $scope "scroll.refreshComplete")
 
+                                    (when-not (nil? callback) (callback) )
+
                                     ))
 
 
                                )
 
                           ))
+
+
+    ($scope.doRefresh (fn [] ($timeout (fn[] (.scrollBottom $ionicScrollDelegate true)) 500)))
 
 
 
