@@ -1,0 +1,42 @@
+<ion-view >
+  <ion-nav-title>
+      在线课堂
+  </ion-nav-title>
+
+  <ion-nav-buttons side="right">
+
+        <button menu-toggle="right" class="button button-icon icon ion-plus"
+                ng-click="newclass()"
+                side="right" >
+            我要创建
+        </button>
+
+  </ion-nav-buttons>
+
+  <ion-content>
+
+
+    <ion-refresher
+            pulling-text="下拉刷新..."
+            on-refresh="initonlineclasses()">
+    </ion-refresher>
+    <ion-list>
+      <ion-item  ng-click="classclick(onlineclass)"   class="item item-avatar-left  item-icon-right" ng-repeat="onlineclass in onlineclasses" >
+
+        <i class="icon ion-android-contacts" style="left: 18px;"></i>
+          <div class="deptname">{{onlineclass.title}}</div>
+          <div class="onlineclassname{{onlineclass.state}}">创建人:{{onlineclass.realname}} 状态:{{onlineclass.state==0? '未开始': onlineclass.state==1? '进行中': '已结束' }}</div>
+          <i class="badge badge-positive  item-note elementCenterAlign">{{onlineclass.classtime | date:'yyyy-MM-dd HH:mm'}}</i>
+
+          <i class="icon ion-ios-arrow-right"></i>
+
+       </ion-item>
+    </ion-list>
+
+
+    <ion-infinite-scroll  ng-if="moreDataCanBeLoaded" on-infinite="getmoreonlineclasses()"></ion-infinite-scroll>
+
+
+
+  </ion-content>
+</ion-view>
