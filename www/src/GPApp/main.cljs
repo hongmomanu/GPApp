@@ -8,6 +8,7 @@
             [GPApp.setting :as setting]
             [GPApp.user :as user]
             [GPApp.messsage :as messsage]
+            [GPApp.onlineclass :as onlineclass]
 
             )
   (:use [jayq.core :only [$ css html]]
@@ -41,5 +42,6 @@
 (setting/init)
 (user/init)
 (messsage/init)
+(onlineclass/init)
 
-(println "Hello world initssssssss  sssssss!")
+

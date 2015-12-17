@@ -178,6 +178,15 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
       }
     }
   })
+  .state('tab.onlineclass', {
+    url: '/setting/onlineclass',
+    views: {
+      'tab-setting': {
+        templateUrl: 'templates/onlineclass.html',
+        controller: 'OnlineClassCtrl'
+      }
+    }
+  })
 
   ;
 

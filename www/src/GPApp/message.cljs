@@ -617,7 +617,7 @@
                                                   (do
                                         (.push $scope.messages (obj :time response.data.data.time :content (str "<p>"   $scope.messagetext "</p>") :local true :realname (str "<a>" js/localStorage.realname (.date js/$.format (new js/Date) "M-dd hh:mm") "</a>")))
 
-                                         (println $scope.messages)
+                                         ;(println $scope.messages)
 
                                         (! $scope.messagetext "")
 
