@@ -23,6 +23,21 @@
 
 
 
+   :updateonlineclassestate (fn [id state]
+                (-> $http
+                  (.get (str js/serverurl "updateonlineclassestate") (obj :params  {:id id :state state} ))
+                  (.then (fn [response] response))))
+
+
+   :deleteonlineclassestate (fn [id]
+                (-> $http
+                  (.get (str js/serverurl "deleteonlineclassestate") (obj :params  {:id id } ))
+                  (.then (fn [response] response))))
+
+
+
+
+
     :addnewclass (fn [userid realname title classtime place]
 
                       (-> $http
@@ -43,7 +58,7 @@
 
 
 
-  (def.controller starter.controllers.OnlineClassCtrl [$scope $sce OnlineClassService  $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
+  (def.controller starter.controllers.OnlineClassCtrl [$scope $sce $ionicActionSheet OnlineClassService  $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
     (println "OnlineClassCtrl")
 
@@ -176,12 +191,57 @@
                          ))
 
 
+    (! $scope.getbuttommenubyclick (fn[clickitem]
+
+                               (cond
+                                (= clickitem.state 0) (.show $ionicActionSheet (obj :buttons [
+                {:text  "<center><i class=\"icon ion-videocamera calm\"></i>开始</center>" }
+
+                {:text  "<center><i class=\"icon ion-close-circled assertive\"></i>删除</center>" }
+            ]
+            :titleText "开始在线课堂"
+            :cancelOnStateChange false
+            :cancelText "取消"
+            :cancel (fn [] (println "cancel"))
+            :buttonClicked (fn[index] (if (= index 0) ($scope.broadcastnewclassonline clickitem)
+                                         ($scope.delteclass  clickitem) )
+                                true
+
+
+                         )))
+
+                                (= clickitem.state 1) (.show $ionicActionSheet (obj :buttons [
+                {:text  "<center><i class=\"icon ion-videocamera calm\"></i>开始</center>" }
+
+                {:text  "<center><i class=\"icon ion-close-circled assertive\"></i>结束</center>" }
+            ]
+            :titleText "开始在线课堂"
+            :cancelOnStateChange false
+            :cancelText "取消"
+            :cancel (fn [] (println "cancel"))
+            :buttonClicked (fn[index] (if (= index 0) ($scope.broadcastnewclassonline clickitem)
+                                         ($scope.endclass  clickitem) )
+                                true
+
+
+                         )))
+                                 :else "zero")
+
+
+
+                               ))
+
+
     (! $scope.classclick (fn[clickitem]
 
                            (println clickitem)
                            (if (= clickitem.userid js/localStorage.userid)
                              (do
                                (println "creater")
+
+                               ($scope.getbuttommenubyclick clickitem)
+
+
                                )
 
                              (do
@@ -189,6 +249,88 @@
                                )
 
                              )
+
+
+                           ))
+
+
+    (! $scope.broadcastnewclassonline (fn[item]
+                                  (println "broadcastnewclassonline" item)
+                                   (->
+                                  $ionicPopup
+                                  (.confirm (obj :title "温馨提示"
+                                                           :template "你确定要开启直播么?"))
+                                  (.then (fn [res]
+                                           (if res (do
+                                (-> OnlineClassService
+                                 (.updateonlineclassestate item._id 1)
+                                 (.then (fn [response]
+                                          (if response.data.success
+                                            ($scope.initonlineclasses)
+                                            (.alert $ionicPopup (obj :title "提示" :template response.data.message))
+
+                                            )
+
+
+                                          ))
+
+
+                                 )
+
+
+                                                     )
+
+
+                                             (println "cancel")
+                                             )
+
+
+                                           ))
+                                  )
+
+
+
+                                   ))
+
+
+    (! $scope.delteclass (fn[item]
+
+                           (println "delteclass" item)
+
+
+                           (->
+                                  $ionicPopup
+                                  (.confirm (obj :title "温馨提示"
+                                                           :template "你确定要开启直播么?"))
+                                  (.then (fn [res]
+                                           (if res (do
+                                (-> OnlineClassService
+                                 (.deleteonlineclassestate item._id)
+                                 (.then (fn [response]
+                                          (if (response.data.success)
+                                            (println "success")
+                                            (.alert $ionicPopup (obj :title "提示" :template response.data.message))
+
+                                            )
+
+
+                                          ))
+
+
+                                 )
+
+
+                                                     )
+
+
+                                             (println "cancel")
+                                             )
+
+
+                                           ))
+                                  )
+
+
 
 
                            ))
