@@ -187,6 +187,15 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
       }
     }
   })
+  .state('tab.videobroadcast', {
+    url: '/setting/videobroadcast/:classtitle/:classid/:userid',
+    views: {
+      'tab-setting': {
+        templateUrl: 'templates/broadcastvideo.html',
+        controller: 'VideobroadcastCtrl'
+      }
+    }
+  })
 
   ;
 

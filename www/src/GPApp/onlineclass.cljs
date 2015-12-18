@@ -193,6 +193,8 @@
 
     (! $scope.getbuttommenubyclick (fn[clickitem]
 
+                                ;(println "okk" (= clickitem.state "0") (= clickitem.state "1") clickitem)
+
                                (cond
                                 (= clickitem.state 0) (.show $ionicActionSheet (obj :buttons [
                 {:text  "<center><i class=\"icon ion-videocamera calm\"></i>开始</center>" }
@@ -246,6 +248,10 @@
 
                              (do
                                (println "customer")
+                               (if (= clickitem.state 1)
+                                 (.go $state "tab.videobroadcast" (obj :classtitle clickitem.title :classid  clickitem._id :userid clickitem.userid) )
+                                 (.alert $ionicPopup (obj :title "提示" :template "当前没有直播"))
+                                 )
                                )
 
                              )
@@ -266,7 +272,11 @@
                                  (.updateonlineclassestate item._id 1)
                                  (.then (fn [response]
                                           (if response.data.success
-                                            ($scope.initonlineclasses)
+                                            (do
+                                              ($scope.initonlineclasses)
+                                              (.go $state "tab.videobroadcast" (obj :classtitle item.title :classid  item._id :userid item.userid) )
+                                              )
+
                                             (.alert $ionicPopup (obj :title "提示" :template response.data.message))
 
                                             )
@@ -301,14 +311,67 @@
                            (->
                                   $ionicPopup
                                   (.confirm (obj :title "温馨提示"
-                                                           :template "你确定要开启直播么?"))
+                                                           :template "你确定要删除么?"))
                                   (.then (fn [res]
                                            (if res (do
                                 (-> OnlineClassService
                                  (.deleteonlineclassestate item._id)
                                  (.then (fn [response]
-                                          (if (response.data.success)
-                                            (println "success")
+                                          (if response.data.success
+
+                                            (do
+                                              ($scope.initonlineclasses)
+                                              (println "success")
+                                              )
+
+                                            (.alert $ionicPopup (obj :title "提示" :template response.data.message))
+
+                                            )
+
+
+                                          ))
+
+
+                                 )
+
+
+                                                     )
+
+
+                                             (println "cancel")
+                                             )
+
+
+                                           ))
+                                  )
+
+
+
+
+                           ))
+
+
+    (! $scope.endclass (fn[item]
+
+                           (println "endclass" item)
+
+
+                           (->
+                                  $ionicPopup
+                                  (.confirm (obj :title "温馨提示"
+                                                           :template "你确定要结束么?"))
+                                  (.then (fn [res]
+                                           (if res (do
+                                (-> OnlineClassService
+                                 (.updateonlineclassestate item._id 2)
+                                 (.then (fn [response]
+                                          (if response.data.success
+
+                                            (do
+                                              ($scope.initonlineclasses)
+                                              (println "success")
+                                              )
+
                                             (.alert $ionicPopup (obj :title "提示" :template response.data.message))
 
                                             )

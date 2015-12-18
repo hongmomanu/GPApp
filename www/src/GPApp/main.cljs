@@ -9,6 +9,7 @@
             [GPApp.user :as user]
             [GPApp.messsage :as messsage]
             [GPApp.onlineclass :as onlineclass]
+            [GPApp.videobroadcast :as videobroadcast]
 
             )
   (:use [jayq.core :only [$ css html]]
@@ -43,5 +44,6 @@
 (user/init)
 (messsage/init)
 (onlineclass/init)
+(videobroadcast/init)
 
 
