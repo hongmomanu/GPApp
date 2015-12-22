@@ -15,13 +15,36 @@
 
   (println "videobroadcastinit")
 
-  (def.controller starter.controllers.VideobroadcastCtrl [$scope $sce     $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
+  (def broadcastsocketurl (
+                let [
+                     oldport (clojure.string/join "" (drop 1 (re-find #":\d+" js/serverurl)))
+                     oldtcp "http"
+                     port  "8888"
+                     tcp "http"
+                     ]
+
+                (->
+                 js/serverurl
+                 (clojure.string/replace  oldport port)
+                 (clojure.string/replace  oldtcp tcp)
+                 )
+
+
+                ))
+
+
+  (def.controller starter.controllers.VideobroadcastCtrl [$scope $sce  $ionicHistory   $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
     (println "VideobroadcastCtrl")
 
+
+
     (! $scope.onlineclass (obj :title $stateParams.classtitle :classid $stateParams.classid))
 
-    (! $scope.socket (.connect js/io "http://localhost:8888/"))
+    (! $scope.socket (.connect js/io broadcastsocketurl (obj "force new connection"  true)))
+
+
+
     (! $scope.onMessageCallbacks (obj))
 
     (.on $scope.socket "message" (fn [data]
@@ -178,7 +201,7 @@
 
 
     (.on $scope.socket "start-broadcasting" (fn [typeOfStreams]
-                                              (js/alert $stateParams.userid)
+                                              ;(js/alert $stateParams.userid)
                                               (if (= $stateParams.userid js/localStorage.userid)
                                                 (do
                                                   (! $scope.connection.sdpConstraints.mandatory
@@ -242,7 +265,83 @@
                               ))
 
 
-    ($timeout (fn [] (.broadcastinit $scope)) 1000)
+    ($timeout (fn [] (.broadcastinit $scope)) 100)
+
+
+    #_(.$on $scope "$ionicView.beforeLeave" (fn [event]
+
+                                      (js/alert "before leave")
+                                      (println "$ionicView.beforeLeave" event)
+                                      (.preventDefault event)
+                                      (.stopPropagation event)
+
+                                      (println "$ionicView.beforeLeave" event)
+                                       false
+
+
+
+
+                                      )
+
+
+
+          )
+
+    (! $scope.isconnectionclosed false)
+
+    (.$on $scope "$stateChangeStart"  (fn [event  toState  toStateParams fromState fromStateParams]
+
+                                        (println "oooo" event)
+
+                                        (when-not $scope.isconnectionclosed
+                                          (do
+                                            (.preventDefault event)
+
+                                            (->
+                                            $ionicPopup
+                                              (.confirm (obj :title "温馨提示"
+                                                           :template "你确定要关闭直播么?"))
+                                              (.then (fn [res]
+                                                       (if res
+                                                         (do
+                                                           ;(println $scope.socket)
+                                                           ;(.disconnect $scope.connection)
+
+
+                                                           (.close $scope.connection)
+
+                                                           (.emit $scope.socket "forceDisconnect")
+
+
+                                                           (! $scope.isconnectionclosed true)
+
+
+
+
+                                                           (.go $state "tab.onlineclass")
+                                                           )
+                                                         (.preventDefault event)
+                                                         )
+
+                                                       )))
+
+                                            )
+
+                                          )
+
+
+
+
+
+
+
+                                        )
+
+          )
+
+
+
+)
 
 
 
@@ -253,7 +352,8 @@
 
 
 
-  )
+
+
 
 
   )

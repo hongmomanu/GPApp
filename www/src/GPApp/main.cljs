@@ -7,9 +7,12 @@
             [GPApp.activity :as activity]
             [GPApp.setting :as setting]
             [GPApp.user :as user]
+            [GPApp.studypointdetail :as studypointdetail]
             [GPApp.messsage :as messsage]
             [GPApp.onlineclass :as onlineclass]
             [GPApp.videobroadcast :as videobroadcast]
+            [GPApp.studypoints :as studypoints]
+
 
             )
   (:use [jayq.core :only [$ css html]]
@@ -36,6 +39,7 @@
 
 
 
+
 (tab/init)
 (gpsubject/init)
 (community/init)
@@ -45,5 +49,7 @@
 (messsage/init)
 (onlineclass/init)
 (videobroadcast/init)
+(studypoints/init)
+(studypointdetail/init)
 
 

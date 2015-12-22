@@ -10,7 +10,7 @@ var serverurl= localStorage.serverurl;
 
 angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -23,6 +23,28 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    /**
+    $ionicPlatform.registerBackButtonAction(function(e) {
+            e.preventDefault();
+
+            console.log($state.$current.name)
+
+
+            if ($ionicHistory.backView()) {
+
+                $ionicHistory.goBack(-1);
+            } else {
+                navigator.Backbutton.goHome(function() {
+                //console.log('success')
+               }, function() {
+                //console.log('fail')
+              });
+            }
+            return false;
+        }, 101);**/
+
+
   });
 })
 .directive('compilehtml', ['$compile', function ($compile) {
@@ -38,12 +60,32 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
    )};
   }])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
+
+        $ionicConfigProvider.platform.ios.tabs.style('standard');
+        $ionicConfigProvider.platform.ios.tabs.position('bottom');
+        $ionicConfigProvider.platform.android.tabs.style('standard');
+        $ionicConfigProvider.platform.android.tabs.position('bottom');
+
+        $ionicConfigProvider.platform.ios.navBar.alignTitle('center');
+        $ionicConfigProvider.platform.android.navBar.alignTitle('center');
+
+        $ionicConfigProvider.platform.ios.backButton.previousTitleText('').icon('ion-ios-arrow-thin-left');
+        $ionicConfigProvider.platform.android.backButton.previousTitleText('').icon('ion-android-arrow-back');
+
+        $ionicConfigProvider.platform.ios.views.transition('ios');
+        $ionicConfigProvider.platform.android.views.transition('android');
+
+
+
+
+
+
   $stateProvider
 
   .state('user', {
@@ -193,6 +235,25 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
       'tab-setting': {
         templateUrl: 'templates/broadcastvideo.html',
         controller: 'VideobroadcastCtrl'
+      }
+    }
+  })
+
+  .state('tab.studypoints', {
+    url: '/setting/studypoints',
+    views: {
+      'tab-setting': {
+        templateUrl: 'templates/studypoints.html',
+        controller: 'StudyPointsCtrl'
+      }
+    }
+  })
+  .state('tab.studypointdetail', {
+    url: '/setting/studypointdetail/:studypointid',
+    views: {
+      'tab-setting': {
+        templateUrl: 'templates/studypoint-detail.html',
+        controller: 'StudyPointdetailCtrl'
       }
     }
   })
