@@ -12,6 +12,7 @@
             [GPApp.onlineclass :as onlineclass]
             [GPApp.videobroadcast :as videobroadcast]
             [GPApp.studypoints :as studypoints]
+            [GPApp.userdetail :as userdetail]
 
 
             )
@@ -51,5 +52,6 @@
 (videobroadcast/init)
 (studypoints/init)
 (studypointdetail/init)
+(userdetail/init)
 
 

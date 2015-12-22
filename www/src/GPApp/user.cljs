@@ -74,6 +74,9 @@
                                         (! js/localStorage.password response.data.user.password)
                                         (! js/localStorage.realname response.data.user.realname)
                                         (! js/localStorage.usertype response.data.user.usertype)
+                                        (! js/localStorage.dutyid response.data.user.dutyid)
+                                        (! js/localStorage.personid response.data.user.personid)
+                                        (! js/localStorage.points response.data.user.points)
 
 
 

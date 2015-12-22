@@ -257,6 +257,15 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
       }
     }
   })
+  .state('tab.userdetail', {
+    url: '/setting/userdetail',
+    views: {
+      'tab-setting': {
+        templateUrl: 'templates/userdetail.html',
+        controller: 'UserDetailCtrl'
+      }
+    }
+  })
 
   ;
 

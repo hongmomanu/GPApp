@@ -1,0 +1,15 @@
+<ion-view >
+    <ion-nav-title>
+    {{studypoint.title}}
+  </ion-nav-title>
+  <ion-content class="padding"  scroll="true" overflow-scroll="true">
+
+      <div class="item item-divider divider-center calm">已学习时长 {{userstudypoint.timelearn | number:2}} 分/ 获取学分时长 {{studypoint.timelong}} 分</div>
+      <div class="item item-body">
+         <button class="button button-block icon-left ion-ios-play button-calm" ng-click="startlearning(studypoint.videofile)">
+             开始学习
+         </button>
+      </div>
+
+  </ion-content>
+</ion-view>

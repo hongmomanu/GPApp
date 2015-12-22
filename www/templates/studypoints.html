@@ -1,0 +1,41 @@
+<ion-view >
+  <ion-nav-title>
+      学分课程
+  </ion-nav-title>
+
+  <ion-nav-buttons side="right">
+
+
+
+  </ion-nav-buttons>
+
+  <ion-content>
+
+
+    <ion-refresher
+            pulling-text="下拉刷新..."
+            on-refresh="initstudypoints()">
+    </ion-refresher>
+    <ion-list>
+      <ion-item  ng-click="studypointclick(studypoint)"   class="item item-avatar-left  item-icon-right" ng-repeat="studypoint in studypoints" >
+
+        <i class="icon ion-android-contacts" style="left: 18px;"></i>
+          <div class="deptname">{{studypoint.title}}</div>
+          <div class="onlineclassname{{studypoint.userids.indexOf(myuserid)>=0? '1':  '0' }}">
+              学分:{{studypoint.point}} 状态:{{studypoint.userids.indexOf(myuserid)>=0?
+
+              studypoint.userdata?('已学习'+ (studypoint.userdata.timelearn | number:0) +'分钟'):'已申请':  '未申请' }}</div>
+          <i class="badge badge-positive  item-note elementCenterAlign">{{studypoint.time | date:'yyyy-MM-dd HH:mm'}}</i>
+
+          <i class="icon ion-ios-arrow-right"></i>
+
+       </ion-item>
+    </ion-list>
+
+
+    <ion-infinite-scroll  ng-if="moreDataCanBeLoaded" on-infinite="getmorestudypoints()"></ion-infinite-scroll>
+
+
+
+  </ion-content>
+</ion-view>
