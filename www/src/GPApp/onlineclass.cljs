@@ -62,6 +62,15 @@
 
     (println "OnlineClassCtrl")
 
+    #_(.webkitGetUserMedia js/navigator (obj :audio true :video true)  (fn [stream]
+                                                                 (println "stream" stream)
+
+                                                                 ) (fn [errr]
+                                                                     (js/alert errr)
+
+                                                                     ))
+
+
     (! $scope.newclassdata (obj))
 
     (! $scope.onlineclasses (clj->js []))

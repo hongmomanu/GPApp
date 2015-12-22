@@ -142,8 +142,17 @@
 
     (! $scope.connection.onstream (fn[event]
 
-                                    ;(js/alert "232323232")
+
+                                    (when (= $stateParams.userid js/localStorage.userid)
+
+
+
+                                      )
+
+
                                     (.appendChild $scope.connection.body event.mediaElement)
+                                    (println "onstream event.mediaElement" event.stream)
+                                    (set! js/testobj event.mediaElement)
                                     ;(println $scope.connection.isInitiator $scope.connection.broadcastingConnection)
                                     (when (and (not $scope.connection.isInitiator )
                                                (not $scope.connection.broadcastingConnection)

@@ -3296,6 +3296,9 @@
     function createMediaElement(stream, session) {
         var mediaElement = document.createElement(stream.isAudio ? 'audio' : 'video');
         mediaElement.id = stream.streamid;
+        //mediaElement.style="widt"
+        mediaElement.style.setProperty("width","100%");
+        mediaElement.style.setProperty("height","100%");
 
         if (isPluginRTC) {
             var body = (document.body || document.documentElement);
