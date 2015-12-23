@@ -140,12 +140,20 @@
             ($scope.broadcastinit)
         ))
 
+    (! ($scope.recordMediaStream) (fn[]
+
+                                  (println "recordMediaStream")
+
+                                  ))
+
+
+
     (! $scope.connection.onstream (fn[event]
 
 
                                     (when (= $stateParams.userid js/localStorage.userid)
 
-
+                                      ($scope.recordMediaStream)
 
                                       )
 
