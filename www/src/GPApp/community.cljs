@@ -48,7 +48,7 @@
     (! $scope.doRefresh (fn[]
 
                           (-> GPSubjectService
-                           (.getarticlesbytypeandtime 1  (if (nil? (first $scope.articles)) (new js/Date) (new js/Date (aget (first $scope.articles) "time"))) )
+                           (.getarticlesbytypeandtime 2  (if (nil? (first $scope.articles)) (new js/Date) (new js/Date (aget (first $scope.articles) "time"))) )
                            (.then (fn [response]
 
                                     (when response.data.success
@@ -72,7 +72,7 @@
                           ))
 
     (-> GPSubjectService
-                           (.getarticlesbytypeandtime 1 (new js/Date))
+                           (.getarticlesbytypeandtime 2 (new js/Date))
                            (.then (fn [response]
 
                                     (when response.data.success

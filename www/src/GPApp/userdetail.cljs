@@ -72,10 +72,11 @@
 
     (! $scope.save (fn[user]
 
+                     (.show $ionicLoading (obj :template "保存中..." :duration 5000))
                      (-> UserDetailService
                            (.updateusercardbyid js/localStorage.userid user.dutyid user.personid)
                            (.then (fn [response]
-
+                                    (.hide $ionicLoading)
                                     (! js/localStorage.personid user.personid)
                                     (! js/localStorage.dutyid user.dutyid)
                                     (.alert $ionicPopup (obj :title "提示" :template "保存成功"))
