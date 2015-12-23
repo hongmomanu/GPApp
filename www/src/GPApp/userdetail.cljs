@@ -24,6 +24,22 @@
                     (.then (fn [response] response))))
 
 
+     :updateusercardbyid (fn[userid dutyid personid]
+                       (-> $http
+                    (.get (str js/serverurl "updateusercardbyid") (obj :params
+                                                                       {
+                                                                        :userid userid
+                                                                        :dutyid dutyid
+                                                                        :personid personid
+                                                                        } ))
+
+                    (.then (fn [response] response)))
+
+
+
+                           )
+
+
 
 
       ))
@@ -52,6 +68,25 @@
 
 
                                     )))
+
+
+    (! $scope.save (fn[user]
+
+                     (-> UserDetailService
+                           (.updateusercardbyid js/localStorage.userid user.dutyid user.personid)
+                           (.then (fn [response]
+
+                                    (! js/localStorage.personid user.personid)
+                                    (! js/localStorage.dutyid user.dutyid)
+                                    (.alert $ionicPopup (obj :title "提示" :template "保存成功"))
+
+
+                                    )))
+
+
+
+
+                     ))
 
 
 
