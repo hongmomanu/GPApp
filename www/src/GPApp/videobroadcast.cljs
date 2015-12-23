@@ -140,7 +140,7 @@
             ($scope.broadcastinit)
         ))
 
-    (! ($scope.recordMediaStream) (fn[]
+    (! $scope.recordMediaStream  (fn[]
 
                                   (println "recordMediaStream")
 
@@ -153,7 +153,7 @@
 
                                     (when (= $stateParams.userid js/localStorage.userid)
 
-                                      ($scope.recordMediaStream)
+                                      ($scope.recordMediaStream )
 
                                       )
 
