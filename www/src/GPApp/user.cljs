@@ -79,9 +79,6 @@
                                         (! js/localStorage.points response.data.user.points)
 
 
-
-
-
                                         (websocket/init  $rootScope)
 
                                         (.nextViewOptions $ionicHistory (obj :disableBack true))

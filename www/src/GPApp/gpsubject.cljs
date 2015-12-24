@@ -47,7 +47,7 @@
     (! $scope.doRefresh (fn[]
 
                           (-> GPSubjectService
-                           (.getarticlesbytypeandtime 0  (if (nil? (first $scope.articles)) (new js/Date) (new js/Date (aget (first $scope.articles) "time"))) )
+                           (.getarticlesbytypeandtime 0  (if (nil? (first $scope.articles)) (new js/Date) (new js/Date (js/$.format.date (new js/Date (aget (first $scope.articles) "time")) "yyyy-M-dd"))) )
                            (.then (fn [response]
 
                                     (when response.data.success

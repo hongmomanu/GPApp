@@ -19,7 +19,7 @@
                 let [
                      oldport (clojure.string/join "" (drop 1 (re-find #":\d+" js/serverurl)))
                      oldtcp "http"
-                     port  "8888"
+                     port  "8887"
                      tcp "http"
                      ]
 
@@ -32,16 +32,40 @@
 
                 ))
 
+  (def uploadsocketurl (
+                let [
+                     oldport (clojure.string/join "" (drop 1 (re-find #":\d+" js/serverurl)))
+                     oldtcp "http"
+                     port  "8888"
+                     tcp "http"
+                     ]
+
+                (->
+                 js/serverurl
+                 (clojure.string/replace  oldport port)
+                 (clojure.string/replace  oldtcp tcp)
+                 )
+                 "http://111.1.76.108:8001/"
+
+
+                ))
+
+
+
 
   (def.controller starter.controllers.VideobroadcastCtrl [$scope $sce  $ionicHistory   $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
     (println "VideobroadcastCtrl")
 
+    (.show $ionicLoading (obj :template "启动中..." :duration 5000))
+
 
 
     (! $scope.onlineclass (obj :title $stateParams.classtitle :classid $stateParams.classid))
 
-    (! $scope.socket (.connect js/io broadcastsocketurl (obj "force new connection"  true)))
+    (! $scope.socket (.connect js/ioold broadcastsocketurl (obj "force new connection"  true)))
+
+    (! $scope.uploadsocket  (js/io uploadsocketurl))
 
 
 
@@ -49,6 +73,7 @@
 
     (.on $scope.socket "message" (fn [data]
                                    (println "messagemessagemessagemessage" data $scope.connection.userid)
+
                                    (if (= data.sender  $scope.connection.userid)
                                      (println "do nothing")
                                      (when (aget $scope.onMessageCallbacks data.channel)
@@ -131,20 +156,110 @@
                                       )))
 
 
-    (! $scope.connection ($scope.initRTCMultiConnection))
+    (! $scope.connection ($scope.initRTCMultiConnection ))
 
     (! $scope.connection.getExternalIceServers false)
 
     (! $scope.connection.onleave (fn[e]
-             ;(js/alert "good bye")
-            ($scope.broadcastinit)
+             ;(js/alert (str "good bye"  $scope.isconnectionclosed))
+            (when-not $scope.isconnectionclosed
+              ($scope.broadcastinit)
+              )
+
         ))
 
-    (! $scope.recordMediaStream  (fn[]
+    (! $scope.last false)
 
-                                  (println "recordMediaStream")
+    (! $scope.recordcallback (fn [timeno stream]
+                               (let [
+                                     test (println "ssss" stream)
+                                     videoRecorder (js/RecordRTC stream (obj :type "video"))
+                                     audioRecorder (js/RecordRTC stream)
+
+                                     ]
+                                 (.startRecording videoRecorder)
+                                 (.startRecording audioRecorder)
+
+                                 ($timeout (fn[]
+                                             (.stopRecording audioRecorder (fn[]
+
+                                                  (.stopRecording videoRecorder
+                                                                  (fn[]
+                                                                     (println "videoRecorder" (.getBlob videoRecorder))
+                                                                     (println "audioRecorder" (.getBlob audioRecorder))
+
+                                                                    (.emit $scope.uploadsocket "newstream"
+                                                                               (obj
+                                                                                    :broadcastid $stateParams.classid
+                                                                                    :last $scope.last
+                                                                                    :vdata (.getBlob videoRecorder)
+                                                                                    :adata (.getBlob audioRecorder)
+
+                                                                                    )
+
+                                                                               )
+                                                                    (when-not  $scope.last
+
+                                                                      ($scope.recordcallback timeno stream )
+                                                                      )
+
+
+                                                                                  ))
+
+                                                                             ))
+
+
+                                             ) timeno)
+
+                                 )
+
+                               ))
+
+
+
+
+
+    (! $scope.recordMediaStream  (fn[stream]
+
+                                   ($timeout (fn[]
+
+
+                                               (.emit $scope.uploadsocket "beginRecording"
+
+                                                (obj :broadcastid $stateParams.classid)
+
+                                               )
+
+                                            ($scope.recordcallback 3000 stream)
+
+
+
+
+                                             (println "recordMediaStream")
+
+
+
+                                               ) 5000)
+
+
+
+
+
 
                                   ))
+
+
+
+    (! $scope.stopRecord (fn []
+
+                           (! $scope.last true)
+                           (.emit $scope.uploadsocket "stopRecording"
+
+                                        (obj :broadcastid $stateParams.classid)
+
+                                        )
+
+                           ))
 
 
 
@@ -153,15 +268,19 @@
 
                                     (when (= $stateParams.userid js/localStorage.userid)
 
-                                      ($scope.recordMediaStream )
+                                      ($scope.recordMediaStream event.stream)
 
                                       )
 
 
                                     (.appendChild $scope.connection.body event.mediaElement)
-                                    (println "onstream event.mediaElement" event.stream)
-                                    (set! js/testobj event.mediaElement)
-                                    ;(println $scope.connection.isInitiator $scope.connection.broadcastingConnection)
+                                    ;(println "onstream event.mediaElement" event.stream )
+
+                                    (! $scope.stream event.stream)
+
+
+                                    ;(set! js/testobj event.mediaElement)
+                                    (println $scope.connection.isInitiator $scope.connection.broadcastingConnection)
                                     (when (and (not $scope.connection.isInitiator )
                                                (not $scope.connection.broadcastingConnection)
                                                )
@@ -193,7 +312,7 @@
 
 
      (.on $scope.socket "join-broadcaster" (fn [broadcaster typeOfStreams]
-
+                                             (.hide $ionicLoading)
                                              (! $scope.connection.session typeOfStreams)
                                              (! $scope.connection.channel  broadcaster.userid)
                                              (! $scope.connection.sessionid  broadcaster.userid)
@@ -219,6 +338,7 @@
 
     (.on $scope.socket "start-broadcasting" (fn [typeOfStreams]
                                               ;(js/alert $stateParams.userid)
+                                              (.hide $ionicLoading)
                                               (if (= $stateParams.userid js/localStorage.userid)
                                                 (do
                                                   (! $scope.connection.sdpConstraints.mandatory
@@ -321,21 +441,22 @@
                                               (.then (fn [res]
                                                        (if res
                                                          (do
-                                                           ;(println $scope.socket)
-                                                           ;(.disconnect $scope.connection)
 
+                                                           ($scope.stopRecord)
+                                                           (! $scope.isconnectionclosed true)
 
-                                                           (.close $scope.connection)
+                                                           (.stop $scope.connection.streams)
+                                                           (.remove $scope.connection.streams)
+
+                                                           (.close $scope.connection )
 
                                                            (.emit $scope.socket "forceDisconnect")
 
-
-                                                           (! $scope.isconnectionclosed true)
-
-
-
+                                                           (.nextViewOptions $ionicHistory (obj :disableBack true))
 
                                                            (.go $state "tab.onlineclass")
+
+
                                                            )
                                                          (.preventDefault event)
                                                          )

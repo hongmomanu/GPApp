@@ -677,6 +677,7 @@
 
             connection.localStreamids.push(streamid);
             stream.onended = function() {
+                //alert(streamid);
                 if (streamedObject.mediaElement && !streamedObject.mediaElement.parentNode && document.getElementById(stream.streamid)) {
                     streamedObject.mediaElement = document.getElementById(stream.streamid);
                 }
@@ -827,6 +828,7 @@
         };
 
         connection.attachExternalStream = function(stream, isScreen) {
+
             var constraints = {};
             if (stream.getAudioTracks && stream.getAudioTracks().length) {
                 constraints.audio = true;
@@ -2323,6 +2325,7 @@
 
         // www.RTCMultiConnection.org/docs/remove/
         connection.remove = function(userid) {
+          //alert(111);
             if (rtcMultiSession.requestsFrom && rtcMultiSession.requestsFrom[userid]) delete rtcMultiSession.requestsFrom[userid];
 
             if (connection.peers[userid]) {
@@ -2745,6 +2748,8 @@
         };
 
         function joinSession(_config, skipOnStateChange) {
+            //alert("join sesssion");
+            tesobj=connection;
             if (rtcMultiSession.donotJoin && rtcMultiSession.donotJoin == _config.sessionid) {
                 return;
             }
@@ -2911,6 +2916,7 @@
 
         // leave session
         this.leave = function() {
+             //alert(111)
             clearSession();
         };
 
@@ -3320,7 +3326,10 @@
 
         // http://goo.gl/WZ5nFl
         // Firefox don't yet support onended for any stream (remote/local)
+
+
         isFirefox && mediaElement.addEventListener('ended', function() {
+            //alert("www")
             stream.onended();
         }, false);
 
