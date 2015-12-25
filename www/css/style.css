@@ -83,6 +83,14 @@
 	border-radius:.75rem;
 }
 
+.deptname {
+  width:200px;
+  white-space:normal;
+  word-break:break-all;
+  overflow:hidden;
+
+}
+
 
 
 

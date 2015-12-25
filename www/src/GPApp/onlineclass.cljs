@@ -359,6 +359,8 @@
 
                            ))
 
+    (! $scope.linehtmlstr "\r")
+
 
     (! $scope.endclass (fn[item]
 
