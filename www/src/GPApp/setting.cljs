@@ -25,9 +25,30 @@
 
     (! $scope.logout (fn[]
 
-                       (! js/localStorage.password "")
-                       (.nextViewOptions $ionicHistory (obj :disableBack true))
-                       (.go $state "user")
+
+                       (->
+                                  $ionicPopup
+                                  (.confirm (obj :title "温馨提示"
+                                                           :template "你确定要离开么?"))
+                                  (.then (fn [res]
+                                           (if res (do
+                                                    (! js/localStorage.password "")
+                                                     (.nextViewOptions $ionicHistory (obj :disableBack true))
+                                                     (.go $state "user")
+
+
+                                                     )
+
+
+                                             (println "cancel")
+                                             )
+
+
+                                           ))
+                                  )
+
+
+
 
                        ))
 

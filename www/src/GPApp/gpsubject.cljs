@@ -95,6 +95,15 @@
   (def.controller starter.controllers.GPsubjectDetailCtrl [$scope $sce $ionicNavBarDelegate GPSubjectService  $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
     (println "GPsubjectDetailCtrl")
+
+    (.show $ionicLoading (obj :template "加载中..."  :duration 5000))
+
+    (.load (js/$ "iframe") (fn[]
+                             (.hide $ionicLoading)
+
+                             ))
+
+
     (! $scope.article {})
 
     (! $scope.frameurl "")

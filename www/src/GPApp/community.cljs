@@ -94,6 +94,14 @@
   (def.controller starter.controllers.CommunityDetailCtrl [$scope $ionicNavBarDelegate $sce GPSubjectService  $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
     (println "CommunityDetailCtrl")
+
+    (.show $ionicLoading (obj :template "加载中..."  :duration 5000))
+
+    (.load (js/$ "iframe") (fn[]
+                             (.hide $ionicLoading)
+
+                             ))
+
     (! $scope.article {})
 
     (! $scope.frameurl "")
@@ -120,6 +128,10 @@
   (def.controller starter.controllers.CommunityDetailContentCtrl [$scope $ionicNavBarDelegate $sce GPSubjectService  $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
     (println "CommunityDetailContentCtrl")
+
+
+
+
     (! $scope.article {})
 
     (! $scope.renderHtml (fn [htmlCode] (.trustAsHtml $sce htmlCode)))

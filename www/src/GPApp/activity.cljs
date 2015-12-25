@@ -72,6 +72,14 @@
   (def.controller starter.controllers.ActivityDetailCtrl [$scope $sce GPSubjectService  $rootScope $state $stateParams $ionicModal $ionicPopup $timeout    $ionicLoading $compile]
 
     (println "ActivityDetailCtrl")
+
+    (.show $ionicLoading (obj :template "加载中..."  :duration 5000))
+
+    (.load (js/$ "iframe") (fn[]
+                             (.hide $ionicLoading)
+
+                             ))
+
     (! $scope.article {})
 
     (! $scope.frameurl "")

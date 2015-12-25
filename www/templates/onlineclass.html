@@ -26,7 +26,7 @@
         <i class="icon ion-android-contacts" style="left: 18px;"></i>
           <div class="deptname">{{onlineclass.title}}</div>
           <div class="onlineclassname{{onlineclass.state}}">创建人:{{onlineclass.realname}} 状态:{{onlineclass.state==0? '未开始': onlineclass.state==1? '进行中': '已结束' }}</div>
-          <i class="badge badge-positive  item-note elementCenterAlign">{{onlineclass.classtime | date:'yyyy-MM-dd HH:mm'}}</i>
+          <i class="badge badge-positive  item-note elementCenterAlign">{{onlineclass.classtime | date:'MM-dd HH:mm'}}</i>
 
           <i class="icon ion-ios-arrow-right"></i>
 
