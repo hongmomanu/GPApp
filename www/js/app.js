@@ -238,6 +238,15 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
       }
     }
   })
+  .state('tab.historyvideo', {
+    url: '/setting/historyvideo',
+    views: {
+      'tab-setting': {
+        templateUrl: 'templates/historyvideo.html',
+        controller: 'HistoryVideoCtrl'
+      }
+    }
+  })
 
   .state('tab.studypoints', {
     url: '/setting/studypoints',
@@ -266,6 +275,7 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
       }
     }
   })
+
 
   ;
 

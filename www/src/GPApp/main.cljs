@@ -13,6 +13,7 @@
             [GPApp.videobroadcast :as videobroadcast]
             [GPApp.studypoints :as studypoints]
             [GPApp.userdetail :as userdetail]
+            [GPApp.historyvideo :as historyvideo]
 
 
             )
@@ -53,5 +54,6 @@
 (studypoints/init)
 (studypointdetail/init)
 (userdetail/init)
+(historyvideo/init)
 
 

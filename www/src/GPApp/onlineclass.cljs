@@ -236,7 +236,7 @@
 
 
                          )))
-                                 :else "zero")
+                                 :else (.go $state "tab.historyvideo"  (obj  :classid  clickitem._id  )))
 
 
 
@@ -359,7 +359,7 @@
 
                            ))
 
-    (! $scope.linehtmlstr "\r")
+    ;(! $scope.linehtmlstr "\r")
 
 
     (! $scope.endclass (fn[item]
