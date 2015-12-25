@@ -239,7 +239,7 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
     }
   })
   .state('tab.historyvideo', {
-    url: '/setting/historyvideo',
+    url: '/setting/historyvideo/:classid',
     views: {
       'tab-setting': {
         templateUrl: 'templates/historyvideo.html',

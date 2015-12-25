@@ -14,6 +14,25 @@
 (defn init []
 
 
+  (def uploadsocketurl (
+                let [
+                     oldport (clojure.string/join "" (drop 1 (re-find #":\d+" js/serverurl)))
+                     oldtcp "http"
+                     port  "8001"
+                     tcp "http"
+                     ]
+
+                (->
+                 js/serverurl
+                 (clojure.string/replace  oldport port)
+                 (clojure.string/replace  oldtcp tcp)
+                 )
+
+
+
+                ))
+
+
   (def.service starter.OnlineClassService [$http]
   (obj
     :getonlineclasses (fn [page]
@@ -236,7 +255,21 @@
 
 
                          )))
-                                 :else (.go $state "tab.historyvideo"  (obj  :classid  clickitem._id  )))
+                                 :else (do
+                                         ;(.go $state "tab.historyvideo"  (obj  :classid  clickitem._id  ))
+                                         (.playVideo js/window.plugins.streamingMedia (str uploadsocketurl "uploads/recording/" clickitem._id "/web.webm"  ) (obj :successCallback (fn[]
+
+
+
+
+                                                                  )
+                                               :errorCallback (fn[errMsg]
+                                                                  (.alert $ionicPopup (obj :title "提示" :template errMsg))
+                                                                )
+                                               ))
+                                         )
+
+                                )
 
 
 
