@@ -288,15 +288,32 @@
 
                                )
 
+
                              (do
+
                                (println "customer")
-                               (if (= clickitem.state 1)
-                                 (.go $state "tab.videobroadcast" (obj :classtitle clickitem.title :classid  clickitem._id :userid clickitem.userid) )
-                                 (.alert $ionicPopup (obj :title "提示" :template "当前没有直播"))
-                                 )
+
+                                (cond
+                                  (= clickitem.state 0) (.alert $ionicPopup (obj :title "提示" :template "当前没有直播"))
+                                  (= clickitem.state 1) (.go $state "tab.videobroadcast" (obj :classtitle clickitem.title :classid  clickitem._id :userid clickitem.userid) )
+                                  :else (do
+                                         ;(.go $state "tab.historyvideo"  (obj  :classid  clickitem._id  ))
+                                         (.playVideo js/window.plugins.streamingMedia (str uploadsocketurl "uploads/recording/" clickitem._id "/web.webm"  ) (obj :successCallback (fn[]
+
+
+
+
+                                                                  )
+                                               :errorCallback (fn[errMsg]
+                                                                  (.alert $ionicPopup (obj :title "提示" :template errMsg))
+                                                                )
+                                               ))
+                                         )))
+
+
                                )
 
-                             )
+
 
 
                            ))
