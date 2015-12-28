@@ -23,6 +23,13 @@ angular.module('starter', ['ionic','angularFileUpload', 'starter.controllers'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+                       
+    document.addEventListener('deviceready', function () {
+        // Just for iOS devices.
+        if (window.device.platform === 'iOS') {
+            cordova.plugins.iosrtc.registerGlobals();
+        }
+    });
 
     /**
     $ionicPlatform.registerBackButtonAction(function(e) {
