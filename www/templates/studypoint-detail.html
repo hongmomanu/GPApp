@@ -11,5 +11,39 @@
          </button>
       </div>
 
+
+      <div class="item item-divider calm" ng-repeat="exercise in studypoint.exercises">
+
+          {{$index+1}} . {{ exercise.title }}     <i class="icon icon-right {{exercise.isright?'ion-checkmark-circled balanced':'ion-close-circled assertive'}}  "  ></i>
+
+          <ion-list >
+
+
+
+            <ion-checkbox ng-repeat="exerciseitem in exercise.data"
+                      ng-change="chooseChange(exercise,exercise.answer)"
+                      ng-model="exerciseitem.checked">
+
+            {{ exerciseitem.name }}
+
+            </ion-checkbox>
+
+          </ion-list>
+
+
+
+
+
+      </div>
+
+
+      <div class="item item-body" >
+         <button class="button button-block icon-left ion-ios-play button-calm" ng-click="getpoints()">
+             获取学分
+         </button>
+      </div>
+
+
+
   </ion-content>
 </ion-view>
