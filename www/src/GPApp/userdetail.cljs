@@ -51,8 +51,6 @@
     (println "UserDetailCtrl")
 
 
-
-
     (-> UserDetailService
                            (.getusertotalpointsbyuid js/localStorage.userid)
                            (.then (fn [response]

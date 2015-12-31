@@ -64,6 +64,7 @@
                            (.then (fn [response]
 
                                     (! $scope.studypoint response.data)
+                                    (! $scope.studypoint.exercises (js/eval $scope.studypoint.exercises))
 
                                     )))
 
@@ -92,10 +93,53 @@
 
                               ))
 
+    (! $scope.islearning false)
+
+
+    (! $scope.getpoints (fn[]
+                          (if (> $scope.userstudypoint.timelearn $scope.studypoint.timelong)
+                            (.alert $ionicPopup (obj :title "提示" :template "获取学分成功"))
+                            (.alert $ionicPopup (obj :title "提示" :template "还未达到学习时间哦"))
+                            )
+
+
+                          ))
+
+
+    (! $scope.chooseChange (fn[exercise answer]
+
+                              (let [
+                                    chooseitems (filter (fn [item] item.checked)  exercise.data)
+                                    choosevalues (map #(aget % "value") chooseitems)
+                                    choosestr (.join (clj->js choosevalues) ",")
+                                    ]
+
+
+                                (! exercise.isright (= choosestr  answer))
+                                )
+
+
+                             ))
+
+    (! $scope.updatelearningtime (fn[]
+
+                                   ($scope.maketimelearn (new js/Date (- (.getTime (new js/Date)) 10000)))
+                                   ($timeout (fn []
+                                                 (when $scope.islearning
+
+                                                     ($scope.updatelearningtime)
+                                                  )
+
+                                                                           ) 10000)
+
+
+
+                                   ))
+
 
     (! $scope.startlearning (fn[url]
 
-
+                              (! $scope.islearning true)
                               (let
                                  [
                                   videourl (str js/serverurl "files/" url)
@@ -103,8 +147,8 @@
                                   options (obj :successCallback (fn[]
                                                                   ;(js/alert "ok")
                                                                   ;(.cancel $interval $scope.startlearningtimer)
-
-                                                                  ($scope.maketimelearn begitime)
+                                                                  (! $scope.islearning false)
+                                                                  ;($scope.maketimelearn begitime)
 
 
 
@@ -122,6 +166,10 @@
                                                                            ($scope.maketimelearn begitime)
 
                                                                            ) 10000))
+
+                                ($scope.updatelearningtime)
+
+
 
                                  (.playVideo js/window.plugins.streamingMedia videourl options)
 

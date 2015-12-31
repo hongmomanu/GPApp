@@ -23,6 +23,30 @@
 
     (! $scope.unreadnums nil)
 
+    (! $scope.shareapp (fn[]
+                (if (nil? $scope.barcodemodal)
+                  (-> $ionicModal
+                  (.fromTemplateUrl  "templates/sharemodal.html" (obj :scope $scope))
+                  (.then (fn [modal]
+                           (! $scope.barcodemodal modal)
+                           (.show $scope.barcodemodal)
+                           (.qrcode (js/$ "#scanbarcode") (obj :text (str js/serverurl "files/app.html") :width 200 :height 200))
+
+                           )))
+
+                  (.show $scope.barcodemodal)
+                  )
+
+
+
+
+                ))
+
+    (! $scope.closebarcodemodal (fn[]
+                                  (.hide $scope.barcodemodal)
+
+                                  ))
+
     (! $scope.logout (fn[]
 
 
